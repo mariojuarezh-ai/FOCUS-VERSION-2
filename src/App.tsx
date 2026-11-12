@@ -720,10 +720,10 @@ export default function App() {
                   </button>
                   <button 
                     onClick={() => navigateTo('focus-for-her')} 
-                    className={`text-left text-sm font-black tracking-widest uppercase hover:text-[#F5C443] transition-colors flex items-center justify-between group/item ${currentView === 'focus-for-her' ? 'text-[#F5C443]' : 'text-smoke/80'}`}
+                    className={`text-left text-sm font-black tracking-widest uppercase hover:text-olive transition-colors flex items-center justify-between group/item ${currentView === 'focus-for-her' ? 'text-olive' : 'text-smoke/80'}`}
                   >
                     <span className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#F5C443]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-olive" />
                       <span>FOCUS FOR HER</span>
                     </span>
                     <ChevronRight size={14} className={`opacity-0 -translate-x-2 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0 ${currentView === 'focus-for-her' ? 'opacity-100 translate-x-0' : ''}`} />
@@ -842,9 +842,9 @@ export default function App() {
               </button>
               <button 
                 onClick={() => navigateTo('focus-for-her')} 
-                className={`py-2 sm:py-3 stencil text-lg sm:text-xl md:text-2xl hover:text-[#F5C443] transition-colors w-full text-center flex items-center justify-center gap-2 ${currentView === 'focus-for-her' ? 'text-[#F5C443]' : 'text-smoke'}`}
+                className={`py-2 sm:py-3 stencil text-lg sm:text-xl md:text-2xl hover:text-olive transition-colors w-full text-center flex items-center justify-center gap-2 ${currentView === 'focus-for-her' ? 'text-olive' : 'text-smoke'}`}
               >
-                <span className="w-2 h-2 rounded-full bg-[#F5C443]" />
+                <span className="w-2 h-2 rounded-full bg-olive" />
                 <span>FOCUS FOR HER</span>
               </button>
               <button 
@@ -989,38 +989,33 @@ export default function App() {
             </div>
 
             {/* ============================================================== */}
-            {/* 🔘 3 BOTONES ARRIBA                                            */}
-            {/* - Arriba izquierda botón: FOCUS FOR HER                         */}
-            {/* - Arriba centro botón: FOCUS FOR HIM                            */}
-            {/* - Arriba derecha botón: FOCUS FOR HYROX                         */}
+            {/* 🔘 3 BOTONES ARRIBA (Idénticos a la referencia solicitada)      */}
+            {/* [ Focus for her ] [ Focus for him ] [ Focus for hyrox ]        */}
             {/* ============================================================== */}
             <div className="relative z-[40] w-full max-w-4xl mx-auto px-4 pt-4 md:pt-6 mb-8">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-2 bg-[#10120E]/95 backdrop-blur-md border border-olive/30 rounded-sm shadow-xl">
-                {/* Arriba izquierda botón: FOCUS FOR HER */}
+              <div className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-3 sm:gap-4">
+                {/* Botón: Focus for her */}
                 <button
                   onClick={() => navigateTo('focus-for-her')}
-                  className="py-3 px-4 text-xs md:text-sm font-black tracking-widest uppercase bg-[#F5C443]/15 hover:bg-[#F5C443] hover:text-black border border-[#F5C443]/50 text-[#F5C443] hover:border-[#F5C443] rounded-sm transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer active:scale-95 text-center shadow-md"
+                  className="bg-white hover:bg-slate-100 text-black font-semibold text-sm sm:text-base px-6 py-2.5 sm:px-7 sm:py-3 rounded-full shadow-lg transition-all active:scale-95 whitespace-nowrap cursor-pointer text-center"
                 >
-                  <span className="w-2 h-2 rounded-full bg-[#F5C443] group-hover:scale-125 transition-transform" />
-                  <span>FOCUS FOR HER</span>
+                  Focus for her
                 </button>
 
-                {/* Arriba centro botón: FOCUS FOR HIM */}
+                {/* Botón: Focus for him */}
                 <button
                   onClick={() => setSelectedProgram('him')}
-                  className="py-3 px-4 text-xs md:text-sm font-black tracking-widest uppercase bg-olive/20 hover:bg-olive hover:text-black border border-olive/40 text-smoke hover:border-olive rounded-sm transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer active:scale-95 text-center"
+                  className="bg-white hover:bg-slate-100 text-black font-semibold text-sm sm:text-base px-6 py-2.5 sm:px-7 sm:py-3 rounded-full shadow-lg transition-all active:scale-95 whitespace-nowrap cursor-pointer text-center"
                 >
-                  <span className="w-2 h-2 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform" />
-                  <span>FOCUS FOR HIM</span>
+                  Focus for him
                 </button>
 
-                {/* Arriba derecha botón: FOCUS FOR HYROX */}
+                {/* Botón: Focus for hyrox */}
                 <button
                   onClick={() => navigateTo('hyrox')}
-                  className="py-3 px-4 text-xs md:text-sm font-black tracking-widest uppercase bg-olive/20 hover:bg-olive hover:text-black border border-olive/40 text-smoke hover:border-olive rounded-sm transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer active:scale-95 text-center"
+                  className="bg-white hover:bg-slate-100 text-black font-semibold text-sm sm:text-base px-6 py-2.5 sm:px-7 sm:py-3 rounded-full shadow-lg transition-all active:scale-95 whitespace-nowrap cursor-pointer text-center"
                 >
-                  <span className="w-2 h-2 rounded-full bg-amber-400 group-hover:scale-125 transition-transform" />
-                  <span>FOCUS FOR HYROX</span>
+                  Focus for hyrox
                 </button>
               </div>
             </div>
@@ -1175,26 +1170,26 @@ export default function App() {
                     1- FOCUS FOR HER
                     2- FOCUS FOR HIM
                     3- FOCUS FOR HYROX */}
-                <div className="flex flex-col sm:flex-row gap-3 md:gap-5 justify-center max-w-3xl mx-auto">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-3xl mx-auto">
                   <button 
                     onClick={() => navigateTo('focus-for-her')}
-                    className="btn-tactical py-4 px-6 text-sm md:text-base font-black tracking-[0.1em] w-full cursor-pointer active:scale-95 transition-all text-center hover:bg-[#F5C443] hover:text-black hover:border-[#F5C443]"
+                    className="bg-white hover:bg-slate-100 text-black font-bold text-sm sm:text-base px-8 py-3.5 rounded-full shadow-lg active:scale-95 transition-all w-full sm:w-auto text-center cursor-pointer"
                   >
-                    1- {t.hero.buttons.her}
+                    Focus for her
                   </button>
 
                   <button 
                     onClick={() => setSelectedProgram('him')}
-                    className="btn-tactical py-4 px-6 text-sm md:text-base font-black tracking-[0.1em] w-full cursor-pointer active:scale-95 transition-all text-center"
+                    className="bg-white hover:bg-slate-100 text-black font-bold text-sm sm:text-base px-8 py-3.5 rounded-full shadow-lg active:scale-95 transition-all w-full sm:w-auto text-center cursor-pointer"
                   >
-                    2- {t.hero.buttons.him}
+                    Focus for him
                   </button>
 
                   <button 
                     onClick={() => navigateTo('hyrox')}
-                    className="btn-tactical py-4 px-6 text-sm md:text-base font-black tracking-[0.1em] w-full cursor-pointer active:scale-95 transition-all text-center"
+                    className="bg-white hover:bg-slate-100 text-black font-bold text-sm sm:text-base px-8 py-3.5 rounded-full shadow-lg active:scale-95 transition-all w-full sm:w-auto text-center cursor-pointer"
                   >
-                    3- {t.hero.buttons.hyrox}
+                    Focus for hyrox
                   </button>
                 </div>
               </motion.div>
