@@ -1109,7 +1109,7 @@ export default function App() {
             {/* ============================================================== */}
             {/* LO SEGUNDO QUE VEO:                                            */}
             {/* TESTIMONIOS (blanco) FOCUS (verde)                             */}
-            {/* 1. Empezamos con el video, audios y fotos de "FOCUS FOR HER"    */}
+            {/* 1. Empezamos con el video y fotos de "FOCUS FOR HER"          */}
             {/* 2. Segundo con las fotos de antes y después de los alumnos     */}
             {/* 3. Tercero con los testimonios de whatsapp                     */}
             {/* ============================================================== */}

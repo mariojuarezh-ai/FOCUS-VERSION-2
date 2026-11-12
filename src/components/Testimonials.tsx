@@ -20,65 +20,11 @@ interface TestimonialsProps {
   onSelectProgram?: (program: 'her' | 'him' | 'hyrox') => void;
 }
 
-interface AudioVoiceNote {
-  id: string;
-  name: string;
-  role: string;
-  avatar: string;
-  duration: string;
-  date: string;
-  text: string;
-  stats: string;
-}
-
 export const Testimonials = ({ language, onSelectProgram }: TestimonialsProps) => {
-  const [playingAudioId, setPlayingAudioId] = useState<string | null>(null);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const oscillatorRef = useRef<OscillatorNode | null>(null);
-  const gainNodeRef = useRef<GainNode | null>(null);
-
-  const voiceNotes: AudioVoiceNote[] = [
-    {
-      id: 'katie',
-      name: 'Katie',
-      role: language === 'es' ? 'Alumna Online Focus' : 'Online Trainee',
-      avatar: 'https://thefocusplan.com/IMAGENES/ANTES-DESPUES/KATIE%20DESPUES%201%20CORREGIDO.png',
-      duration: '0:48',
-      date: 'Ayer 7:45 PM',
-      text: language === 'es' 
-        ? "Mi postura se siente mucho mejor y confío más en mí misma para hacer una sentadilla más profunda ahora que me estoy haciendo más fuerte. Mis piernas se sienten mucho más firmes y mi core duro. Lo que más orgullosa me tiene es que ya puedo hacer dominadas estrictas!"
-        : "My posture feels way better and I trust myself more to do a deeper squat now that I am stronger. My legs feel much firmer and my core tight. I'm most proud that I can do strict pull-ups now!",
-      stats: language === 'es' ? '+Fuerza & Dominio' : '+Strength & Mastery'
-    },
-    {
-      id: 'diana',
-      name: 'Diana',
-      role: language === 'es' ? 'Transformación Focus for Her' : 'Focus for Her Trainee',
-      avatar: 'https://thefocusplan.com/IMAGENES/ANTES-DESPUES/DIANA%20DESPUES%201.png',
-      duration: '0:37',
-      date: 'Martes 11:15 AM',
-      text: language === 'es'
-        ? "Coach, de verdad gracias por los ajustes semanales. Bajé 8 kilos pero sobre todo se me redujo la cintura y tonifiqué glúteos sin morirme de hambre ni hacer horas de cardio eterno."
-        : "Coach, thank you for the weekly adjustments. I lost 8 kilos, trimmed my waist and toned glutes without starving or doing endless hours of boring cardio.",
-      stats: language === 'es' ? '-8kg Grasa & Cintura' : '-8kg Fat & Toned Waist'
-    },
-    {
-      id: 'pau',
-      name: 'Pau',
-      role: language === 'es' ? 'Focus for Her & Hyrox' : 'Focus for Her & Hyrox',
-      avatar: 'https://thefocusplan.com/IMAGENES/ANTES-DESPUES/PAU%20DESPUES%201%20CORREGIDO.png',
-      duration: '0:42',
-      date: '10 Nov 8:20 PM',
-      text: language === 'es'
-        ? "Nunca pensé que un entrenamiento en línea con la app fuera tan personalizado. Ver los videos explicativos y recibir feedback en WhatsApp me dio la técnica perfecta para entrenar pesas sin miedo a lesionarme."
-        : "I never thought online training through the app would be so personalized. Having video reviews and WhatsApp feedback gave me the confidence to lift heavy without fearing injury.",
-      stats: language === 'es' ? 'Recomposición Total' : 'Total Recomposition'
-    }
-  ];
 
   const focusForHerPhotos = [
     {
@@ -153,57 +99,7 @@ export const Testimonials = ({ language, onSelectProgram }: TestimonialsProps) =
     }
   ];
 
-  // Synthesize realistic subtle audio playback simulation
-  const toggleVoiceNote = (id: string) => {
-    if (playingAudioId === id) {
-      // Stop
-      if (oscillatorRef.current) {
-        try {
-          oscillatorRef.current.stop();
-          oscillatorRef.current.disconnect();
-        } catch (_) {}
-      }
-      setPlayingAudioId(null);
-      return;
-    }
 
-    // Stop existing
-    if (oscillatorRef.current) {
-      try {
-        oscillatorRef.current.stop();
-        oscillatorRef.current.disconnect();
-      } catch (_) {}
-    }
-
-    setPlayingAudioId(id);
-
-    try {
-      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-      if (AudioCtx) {
-        const ctx = new AudioCtx();
-        audioContextRef.current = ctx;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(260, ctx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(320, ctx.currentTime + 0.3);
-        gain.gain.setValueAtTime(0.05, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 3.0);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        oscillatorRef.current = osc;
-        gainNodeRef.current = gain;
-
-        // Auto finish after short demo
-        setTimeout(() => {
-          setPlayingAudioId(prev => (prev === id ? null : prev));
-        }, 8000);
-      }
-    } catch (e) {
-      console.warn("Audio playback simulation notice:", e);
-    }
-  };
 
   const toggleVideoPlayback = () => {
     if (!videoRef.current) return;
@@ -276,9 +172,9 @@ export const Testimonials = ({ language, onSelectProgram }: TestimonialsProps) =
             </a>
           </div>
 
-          <div className="grid lg:grid-cols-12 gap-8 items-start mb-12">
-            {/* Video Focus For Her */}
-            <div className="lg:col-span-7 bg-black/60 border border-olive/30 rounded-sm overflow-hidden relative group shadow-2xl">
+          {/* Video Focus For Her */}
+          <div className="max-w-4xl mx-auto mb-12">
+            <div className="bg-black/60 border border-olive/30 rounded-sm overflow-hidden relative group shadow-2xl">
               <div className="relative aspect-video w-full bg-black">
                 <video
                   ref={videoRef}
@@ -299,7 +195,7 @@ export const Testimonials = ({ language, onSelectProgram }: TestimonialsProps) =
                     </span>
                     <button
                       onClick={toggleVideoMute}
-                      className="w-9 h-9 rounded-full bg-black/70 border border-olive/30 text-smoke hover:text-olive hover:border-olive transition-colors flex items-center justify-center"
+                      className="w-9 h-9 rounded-full bg-black/70 border border-olive/30 text-smoke hover:text-olive hover:border-olive transition-colors flex items-center justify-center cursor-pointer"
                       title={isVideoMuted ? "Activar audio" : "Silenciar audio"}
                     >
                       {isVideoMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
@@ -309,7 +205,7 @@ export const Testimonials = ({ language, onSelectProgram }: TestimonialsProps) =
                   <div className="flex items-center justify-between pointer-events-auto">
                     <button
                       onClick={toggleVideoPlayback}
-                      className="px-4 py-2 bg-olive text-black font-black text-xs tracking-widest uppercase rounded-sm flex items-center gap-2 hover:bg-[#A3B18A] transition-colors"
+                      className="px-4 py-2 bg-olive text-black font-black text-xs tracking-widest uppercase rounded-sm flex items-center gap-2 hover:bg-[#A3B18A] transition-colors cursor-pointer"
                     >
                       {isVideoPlaying ? <Pause size={14} /> : <Play size={14} />}
                       <span>{isVideoPlaying ? (language === 'es' ? 'PAUSAR' : 'PAUSE') : (language === 'es' ? 'REPRODUCIR' : 'PLAY')}</span>
@@ -327,93 +223,6 @@ export const Testimonials = ({ language, onSelectProgram }: TestimonialsProps) =
                     : 'Technique supervision, biomechanical correction, and progressive loading without risk of injury.'}
                 </p>
               </div>
-            </div>
-
-            {/* Audios de Alumnas Focus For Her */}
-            <div className="lg:col-span-5 space-y-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-black tracking-widest text-olive uppercase flex items-center gap-2">
-                  <Volume2 size={14} />
-                  {language === 'es' ? 'NOTAS DE AUDIO DE ALUMNAS' : 'TRAINEE VOICE NOTES'}
-                </span>
-                <span className="text-[10px] text-smoke/50 font-mono">AUDIO VERIFICADO</span>
-              </div>
-
-              {voiceNotes.map((vn) => {
-                const isPlaying = playingAudioId === vn.id;
-                return (
-                  <div
-                    key={vn.id}
-                    className={`p-4 rounded-sm border transition-all duration-300 bg-black/60 backdrop-blur-md ${
-                      isPlaying 
-                        ? 'border-olive shadow-[0_0_20px_rgba(118,132,85,0.25)] bg-olive/10' 
-                        : 'border-olive/20 hover:border-olive/40'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3 mb-3">
-                      <img 
-                        src={vn.avatar} 
-                        alt={vn.name}
-                        className="w-11 h-11 rounded-full object-cover border border-olive/40 shrink-0"
-                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-stencil text-base text-white truncate">{vn.name}</h4>
-                          <span className="text-[10px] text-olive font-mono">{vn.date}</span>
-                        </div>
-                        <p className="text-[10px] text-smoke/60 uppercase tracking-widest truncate">{vn.role}</p>
-                      </div>
-                    </div>
-
-                    {/* Audio Player Bar */}
-                    <div className="flex items-center gap-3 p-2.5 bg-[#171914] border border-olive/20 rounded-sm mb-3">
-                      <button
-                        onClick={() => toggleVoiceNote(vn.id)}
-                        className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 transition-transform active:scale-95 ${
-                          isPlaying 
-                            ? 'bg-olive text-black animate-pulse' 
-                            : 'bg-olive/20 text-olive hover:bg-olive hover:text-black'
-                        }`}
-                      >
-                        {isPlaying ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
-                      </button>
-
-                      {/* Waveform graphic */}
-                      <div className="flex-1 flex items-center gap-0.5 h-6 overflow-hidden px-1">
-                        {[40, 65, 85, 30, 95, 60, 45, 75, 100, 50, 70, 90, 35, 60, 80, 55, 95, 40, 75, 50, 85, 60, 40, 70, 90, 50].map((h, i) => (
-                          <div
-                            key={i}
-                            className={`flex-1 rounded-full transition-all duration-200 ${
-                              isPlaying 
-                                ? 'bg-olive' 
-                                : 'bg-smoke/30'
-                            }`}
-                            style={{
-                              height: isPlaying ? `${Math.max(20, (h * Math.sin((i + Date.now() / 150)) + 60))}%` : `${h}%`
-                            }}
-                          />
-                        ))}
-                      </div>
-
-                      <span className="text-[10px] font-mono text-smoke/70 shrink-0">
-                        {isPlaying ? '0:12' : vn.duration}
-                      </span>
-                    </div>
-
-                    <p className="text-xs text-smoke/80 italic leading-relaxed">
-                      "{vn.text}"
-                    </p>
-
-                    <div className="mt-2.5 pt-2 border-t border-olive/10 flex items-center justify-between text-[10px]">
-                      <span className="text-olive font-black tracking-wider uppercase">{vn.stats}</span>
-                      <span className="text-smoke/40 flex items-center gap-1">
-                        <CheckCheck size={12} className="text-cyan-400" /> WhatsApp
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
             </div>
           </div>
 
