@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Box & Fitness | Entrenamiento Táctico y Acondicionamiento Físico</title>
+    <meta name="description" content="Entrenamiento táctico y acondicionamiento físico de élite. Focus Box & Fitness: disciplina militar y rutinas de alto rendimiento para Hyrox y fitness funcional.">
+    <meta name="keywords" content="entrenamiento táctico, acondicionamiento físico, disciplina militar, fitness funcional, Hyrox México, Focus Box, alto rendimiento, rutinas de ejercicio">
+    <script src="https://widget.rss.app/v1/carousel.js" type="text/javascript" async></script>
+    
+    <!-- JSON-LD Schema Markup -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "Focus Box & Fitness",
+        "image": "https://thefocusplan.com/IMAGENES/LOGO%20FOCUS%20-%20SIN%20FONDO.png",
+        "description": "Entrenamiento táctico y acondicionamiento físico de alto rendimiento.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "MX"
+        },
+        "priceRange": "$$$",
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Plan Essential",
+            "price": "250",
+            "priceCurrency": "MXN"
+          },
+          {
+            "@type": "Offer",
+            "name": "Plan Focused",
+            "price": "500",
+            "priceCurrency": "MXN"
+          }
+        ]
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Montserrat:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* Language Toggle Styles */
+        .lang-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(118, 132, 85, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--primary);
+            color: var(--smoke);
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lang-switch:hover {
+            background: var(--primary);
+            color: var(--bg);
+        }
+
+        /* Spotify Widget Styles */
+        .music-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            background: rgba(118, 132, 85, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .music-toggle:hover {
+            background: var(--primary);
+            color: var(--bg);
+            transform: scale(1.1);
+        }
+        .music-widget {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1000;
+            width: 320px;
+            background: rgba(11, 11, 11, 0.95);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--primary);
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px) scale(0.95);
+        }
+        .music-widget.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+        .music-toggle.hidden-fab {
+            transform: scale(0) rotate(-90deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .music-header {
+            font-size: 8px;
+            font-weight: 900;
+            letter-spacing: 0.3em;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(118, 132, 85, 0.2);
+            padding-bottom: 5px;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <script>
+        const translations = {
+            es: {
+                hero_status: "[ STATUS: READY FOR COMBAT ]",
+                hero_title: "YOU ALWAYS STAY <span>FOCUSED</span>",
+                hero_desc: "Entrenamiento táctico y acondicionamiento físico de élite inspirado en la disciplina militar. Optimiza tu rendimiento con rutinas funcionales diseñadas para superar tus límites.",
+                hero_cta1: "INICIAR TRANSFORMACIÓN",
+                hero_cta2: "VER HORARIOS",
+                prog_title: "MISIONES <span>DIGITALES</span>",
+                prog_desc: "Sistemas de entrenamiento de alto rendimiento adaptados a tu entorno.",
+                ess_title: "ESSENTIAL",
+                ess_unit: "MXN / Mes",
+                ess_cta: "INICIAR PROTOCOLO",
+                foc_title: "FOCUSED",
+                foc_unit: "MXN / Mes",
+                foc_cta: "MAXIMIZAR RENDIMIENTO",
+                prices_header: "P R E C I O S",
+                prices_ind: "POR CLASE (1-4 PERSONAS)",
+                price_1: "1 Clase",
+                price_2: "2 Clases x Semana",
+                price_12: "12 Clases x Mes",
+                prices_grp: "MENSUALIDAD (5 CLASES / SEM)",
+                pkg_foc: "Paquete \"FOCUSED\" (1 Persona)",
+                pkg_partners: "Paquete \"PARTNERS\" (2 Personas)",
+                pkg_thirds: "Paquete \"THIRDS\" (3 Personas)",
+                footer_copy: "A L P H A &nbsp; O P E R A T I O N A L &nbsp; S Y S T E M &nbsp; V 2 . 5"
+            },
+            en: {
+                hero_status: "[ STATUS: READY FOR COMBAT ]",
+                hero_title: "YOU ALWAYS STAY <span>FOCUSED</span>",
+                hero_desc: "Elite tactical training and physical conditioning inspired by military discipline. Optimize your performance with functional routines designed to exceed your limits.",
+                hero_cta1: "START TRANSFORMATION",
+                hero_cta2: "VIEW SCHEDULE",
+                prog_title: "DIGITAL <span>MISSIONS</span>",
+                prog_desc: "High-performance training systems adapted to your environment.",
+                ess_title: "ESSENTIAL",
+                ess_unit: "MXN / Month",
+                ess_cta: "START PROTOCOL",
+                foc_title: "FOCUSED",
+                foc_unit: "MXN / Month",
+                foc_cta: "MAXIMIZE PERFORMANCE",
+                prices_header: "P R I C I N G",
+                prices_ind: "PER CLASS (1-4 PEOPLE)",
+                price_1: "1 Class",
+                price_2: "2 Classes per Week",
+                price_12: "12 Classes per Month",
+                prices_grp: "MONTHLY (5 CLASSES / WEEK)",
+                pkg_foc: "\"FOCUSED\" Package (1 Person)",
+                pkg_partners: "\"PARTNERS\" Package (2 People)",
+                pkg_thirds: "\"THIRDS\" Package (3 People)",
+                footer_copy: "A L P H A &nbsp; O P E R A T I O N A L &nbsp; S Y S T E M &nbsp; V 2 . 5"
+            }
+        };
+
+        let currentLang = 'es';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            const t = translations[currentLang];
+            
+            document.querySelectorAll('[data-t]').forEach(el => {
+                const key = el.getAttribute('data-t');
+                if (t[key]) {
+                    el.innerHTML = t[key];
+                }
+            });
+            
+            document.querySelector('.lang-switch span').textContent = currentLang === 'es' ? 'EN' : 'ES';
+            localStorage.setItem('focus-lang', currentLang);
+        }
+
+        function toggleMusic() {
+            const widget = document.getElementById('spotify-widget');
+            widget.classList.toggle('open');
+        }
+
+        function closeMusic() {
+            const widget = document.getElementById('spotify-widget');
+            widget.classList.remove('open');
+            document.getElementById('spotify-fab').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('focus-lang');
+            if (savedLang) {
+                if (savedLang !== currentLang) toggleLanguage();
+            } else {
+                // Geo-detection for USA/Europe
+                fetch('https://ipapi.co/json/')
+                    .then(res => res.json())
+                    .then(data => {
+                        const isUS = data.country_code === 'US';
+                        const isEU = data.continent_code === 'EU';
+                        const browserLang = navigator.language.split('-')[0];
+
+                        if ((isUS || isEU || browserLang === 'en') && currentLang !== 'en') {
+                            toggleLanguage();
+                        }
+                    })
+                    .catch(() => {
+                        // Fallback to browser language
+                        const browserLang = navigator.language.split('-')[0];
+                        if (browserLang === 'en' && currentLang !== 'en') {
+                            toggleLanguage();
+                        }
+                    });
+            }
+        });
+    </script>
+</head>
+<body>
+    <button class="lang-switch" onclick="toggleLanguage()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        <span>EN</span>
+    </button>
+
+    <div id="spotify-widget" class="music-widget">
+        <div class="music-header">
+            <span>Audio Intel // Comms</span>
+            <div style="display: flex; gap: 10px;">
+                <span style="cursor:pointer; opacity: 0.8;" onclick="toggleMusic()" title="Minimizar">—</span>
+                <span style="cursor:pointer; opacity: 0.5;" onclick="closeMusic()" title="Cerrar">✕</span>
+            </div>
+        </div>
+        <iframe style="border-radius:2px" src="https://open.spotify.com/embed/playlist/7ke8MsoH2gF3zNguHGKU38?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </div>
+    
+    <button id="spotify-fab" class="music-toggle" onclick="toggleMusic()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+    </button>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--smoke);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Topographic Background Overlay */
+        .topo-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20C40 10 60 50 100 40C140 30 160 70 200 60' fill='none' stroke='%23768455' stroke-width='0.5'/%3E%3Cpath d='M0 60C50 50 70 90 120 80C170 70 190 110 200 100' fill='none' stroke='%23768455' stroke-width='0.5'/%3E%3Cpath d='M0 100C30 90 50 130 90 120C130 110 150 150 200 140' fill='none' stroke='%23768455' stroke-width='0.5'/%3E%3Cpath d='M0 140C60 130 80 170 140 160C200 150 220 190 200 180' fill='none' stroke='%23768455' stroke-width='0.5'/%3E%3Cpath d='M0 180C40 170 60 210 100 200' fill='none' stroke='%23768455' stroke-width='0.5'/%3E%3C/svg%3E");
+        }
+
+        .topo-fade {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at center, transparent, var(--bg));
+        }
+
+        /* Typography */
+        h1, h2, h3, .stencil {
+            font-family: 'Black Ops One', cursive;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(11, 11, 11, 0.7) 0%, rgba(11, 11, 11, 0.2) 50%, rgba(11, 11, 11, 1) 100%);
+            z-index: 0;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-status {
+            display: inline-block;
+            padding: 4px 12px;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            margin-bottom: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(118, 132, 85, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(242, 242, 242, 0.7);
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 18px 32px;
+            text-decoration: none;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            border-radius: 2px;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(118, 132, 85, 0.4);
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(118, 132, 85, 0.6);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(242, 242, 242, 0.2);
+            color: var(--smoke);
+            padding: 18px 32px;
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            border-radius: 2px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            background-color: rgba(118, 132, 85, 0.05);
+        }
+
+        /* Logo Component */
+        .logo-wrap {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .logo-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            position: relative;
+        }
+
+        .logo-inner {
+            width: 85%;
+            height: 85%;
+            border-radius: 50%;
+            border: 2px solid rgba(118, 132, 85, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text-top {
+            position: absolute;
+            top: 25px;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.4em;
+            width: 80%;
+            text-align: center;
+        }
+
+        .logo-text-bottom {
+            position: absolute;
+            bottom: 30px;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 0.5em;
+        }
+
+        .logo-symbol {
+            width: 120px;
+            height: 120px;
+            color: var(--primary);
+        }
+
+        /* Pricing Cards */
+        .section-padding {
+            padding: 120px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title .pre-title {
+            display: inline-block;
+            padding: 4px 15px;
+            border: 1px solid rgba(118, 132, 85, 0.3);
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.5em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            border-radius: 50px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .section-title p {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 20px;
+        }
+
+        #pricing {
+            position: relative;
+            overflow: hidden;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .pricing-accents {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .accent {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(118, 132, 85, 0.05);
+            filter: blur(100px);
+            border-radius: 50%;
+        }
+
+        .accent-1 { top: 10%; left: 5%; }
+        .accent-2 { bottom: 10%; right: 5%; }
+
+        .pricing-grid {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(21, 22, 25, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(118, 132, 85, 0.4);
+            background: rgba(21, 22, 25, 0.6);
+        }
+
+        .card.featured {
+            border-width: 2px;
+            border-color: var(--primary);
+            box-shadow: 0 30px 60px -15px rgba(118, 132, 85, 0.15);
+            background: rgba(118, 132, 85, 0.03);
+        }
+
+        .card.featured:hover {
+            background: rgba(118, 132, 85, 0.06);
+        }
+
+        .card .phase {
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            opacity: 0.3;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--primary);
+            color: var(--bg);
+            padding: 6px 20px;
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .card h3 {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            line-height: 1;
+        }
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .price span {
+            font-size: 0.9rem;
+            opacity: 0.4;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .price-meta {
+            margin-bottom: 40px;
+        }
+        
+        .old-price {
+            font-size: 0.9rem;
+            text-decoration: line-through;
+            opacity: 0.2;
+            font-weight: 900;
+            letter-spacing: 0.2em;
+        }
+
+        .features {
+            list-style: none;
+            margin-bottom: 50px;
+            flex-grow: 1;
+        }
+
+        .features li {
+            font-size: 0.85rem;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: rgba(242, 242, 242, 0.6);
+            transition: 0.3s;
+        }
+
+        .card:hover .features li {
+            color: rgba(242, 242, 242, 1);
+        }
+
+        .features li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            opacity: 0.4;
+            flex-shrink: 0;
+        }
+
+        .card.featured .features li::before {
+            background-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .paypal-placeholder {
+            width: 100%;
+            margin-top: auto;
+        }
+
+        /* Class Tables */
+        .table-wrap {
+            margin-top: 80px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .table-header {
+            background: var(--primary);
+            padding: 15px;
+            text-align: center;
+            font-family: 'Black Ops One';
+            letter-spacing: 0.5em;
+            margin-bottom: 20px;
+        }
+
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid rgba(118, 132, 85, 0.2);
+            transition: 0.3s;
+        }
+
+        .table-row:hover {
+            background: rgba(118, 132, 85, 0.05);
+        }
+
+        .row-info .name {
+            font-weight: 900;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .row-price {
+            text-align: right;
+        }
+
+        .row-price .amt {
+            font-size: 1.2rem;
+            font-weight: 900;
+        }
+
+        .row-price .sub {
+            font-size: 10px;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Footer */
+        footer {
+            padding: 80px 0 40px;
+            border-top: 1px solid rgba(118, 132, 85, 0.2);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .footer-logo h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(118, 132, 85, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--smoke);
+            font-size: 12px;
+            transition: 0.3s;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 10px;
+            opacity: 0.3;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+        }
+        
+        .special-offers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(118, 132, 85, 0.1);
+            padding-top: 40px;
+        }
+        
+        .offer-item h4 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-weight: 900;
+        }
+        
+        .offer-item p {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero h1 { font-size: 3.5rem; }
+            .hero p { margin: 0 auto 40px; }
+            .btn-group { justify-content: center; }
+            .logo-wrap { width: 220px; height: 220px; order: -1; }
+            .logo-symbol { width: 80px; height: 80px; }
+            .special-offers { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topo-bg"></div>
+    <div class="topo-fade"></div>
+
+    <!-- Header / Hero -->
+    <header class="hero">
+        <video 
+            autoplay 
+            muted 
+            loop 
+            playsinline
+            class="hero-video"
+            poster="https://thefocusplan.com/IMAGENES/FOCUS%20FONDO%202.png"
+        >
+            <source src="https://thefocusplan.com/IMAGENES/VIDEO%20FONDO%203.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="container hero-grid">
+            <section class="fade-in">
+                <div class="hero-status" data-t="hero_status">[ STATUS: READY FOR COMBAT ]</div>
+                <h1 data-t="hero_title">YOU ALWAYS STAY <span>FOCUSED</span></h1>
+                <p data-t="hero_desc">Sistema de entrenamiento táctico diseñado para aquellos que buscan exceder sus límites. Disciplina militar, resultados élite.</p>
+                <div class="btn-group">
+                    <a href="#pricing" class="btn-primary" data-t="hero_cta1">INICIAR TRANSFORMACIÓN</a>
+                    <a href="#classes" class="btn-secondary" data-t="hero_cta2">VER HORARIOS</a>
+                </div>
+            </section>
+            <div class="logo-wrap fade-in">
+                <div class="logo-circle" style="overflow: hidden;">
+                    <img 
+                        src="https://thefocusplan.com/IMAGENES/LOGO%20FOCUS%20-%20SIN%20FONDO.png" 
+                        alt="Logo de Focus Box & Fitness - Entrenamiento funcional de alto rendimiento" 
+                        style="width: 100%; height: 100%; object-fit: contain; padding: 20px;"
+                    >
+                </div>
+            </div>
+        </div>
+    </header>
+    <div style="background: var(--bg); overflow: hidden;">
+    <!-- Vision Section -->
+    <section id="about" class="section-padding" style="padding: 100px 0;">
+        <div class="container" style="display: grid; grid-template-columns: 1fr; gap: 60px; align-items: center;">
+            <style>
+                #about .container { max-width: 1000px; }
+                @media (min-width: 768px) {
+                    #about .container { grid-template-columns: 1fr 1fr !important; }
+                }
+                .vision-img-container {
+                    position: relative;
+                    min-height: 400px;
+                    background: rgba(118, 132, 85, 0.05);
+                    border: 1px solid rgba(118, 132, 85, 0.1);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    overflow: hidden;
+                }
+                @media (min-width: 768px) {
+                    .vision-img-container { min-height: 500px; }
+                }
+                .vision-img-container img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                    transition: 0.7s ease;
+                }
+                .vision-img-container:hover img {
+                    transform: scale(1.05);
+                }
+            </style>
+            <div class="fade-in">
+                <div class="pre-title">Nuestra Visión</div>
+                <h2 class="stencil">DISCIPLINA <span style="color: var(--primary);">TÁCTICA</span></h2>
+                <div style="border-left: 4px solid var(--primary); padding-left: 30px; margin-top: 30px;">
+                    <p style="opacity: 0.8; font-weight: 500; line-height: 1.8;">Focus Box & Fitness es el estándar en entrenamiento táctico y acondicionamiento físico especializado. Nuestra metodología combina la disciplina militar con ejercicios de alto rendimiento para forjar una mentalidad y un cuerpo inquebrantables.</p>
+                    <p style="opacity: 0.6; font-size: 14px; font-style: italic; margin-top: 20px;">"El foco es el arma más poderosos en el campo de batalla de tu vida diaria."</p>
+                </div>
+            </div>
+            <div class="vision-img-container fade-in">
+                <img src="https://thefocusplan.com/IMAGENES/FOCUS%20GYM.png" alt="Focus Box Tactical Gym">
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <!-- Instagram Intel Feed -->
+    <section id="intel" class="section-padding" style="background: transparent;">
+        <div class="container">
+            <div class="section-title fade-in text-center" style="margin-bottom: 60px; text-align: center;">
+                <div class="pre-title">RECON DIVISION</div>
+                <h2 class="stencil">FEED DE <span style="color: var(--primary);">INTELIGENCIA</span></h2>
+                <p style="opacity: 0.6; font-size: 14px; text-transform: uppercase; margin-top: 10px;">Actividad reciente en el campo de entrenamiento.</p>
+            </div>
+            
+            <div class="fade-in" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(118,132,85,0.2); padding: 20px; border-radius: 4px; backdrop-filter: blur(10px);">
+                <rssapp-carousel id="IeEWIwn3AuyEJncT"></rssapp-carousel>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;" class="fade-in">
+                <a href="https://www.instagram.com/focusboxfitness/" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 900; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid rgba(118, 132, 85, 0.3); padding-bottom: 5px;">Sigue la Operación en Instagram</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="section-padding">
+        <div class="pricing-bg">
+            <img src="https://thefocusplan.com/IMAGENES/FOCUS%20FONDO%202.png" alt="Entrenamiento táctico Focus Box fitness pesas kettlebells" style="opacity: 0.4;">
+        </div>
+        <div class="pricing-overlay"></div>
+        <div class="pricing-accents">
+            <div class="accent accent-1"></div>
+            <div class="accent accent-2"></div>
+        </div>
+        <div class="container" style="position: relative; z-index: 2;">
+            <header class="section-title fade-in">
+                <div class="pre-title">Elite Systems</div>
+                <h2 data-t="prog_title">MISIONES <span>DIGITALES</span></h2>
+                <p data-t="prog_desc">Sistemas de entrenamiento de alto rendimiento adaptados a tu entorno.</p>
+            </header>
+
+            <div class="pricing-grid">
+                <!-- Essential -->
+                <article class="card fade-in">
+                    <div class="phase">Phase 01: Core Systems</div>
+                    <h3 data-t="ess_title">ESSENTIAL</h3>
+                    <div class="price">$250 <span data-t="ess_unit">MXN / Mes</span></div>
+                    <div class="price-meta"></div>
+                    <ul class="features">
+                        <li>Protocolo de Valoración Inicial</li>
+                        <li>Plan Operativo Personalizado</li>
+                        <li>Acceso Total a Plataforma FOCUS</li>
+                        <li>Manual de Hábitos de Rendimiento</li>
+                        <li>Optimización de Nutrición Básica</li>
+                        <li>Soporte Estratégico Mensual</li>
+                    </ul>
+                    <div class="paypal-placeholder">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                            <input type="hidden" name="cmd" value="_s-xclick" />
+                            <input type="hidden" name="hosted_button_id" value="6QCRB4S7A2ZEJ" />
+                            <input type="hidden" name="currency_code" value="MXN" />
+                            <button type="submit" name="submit" class="btn-primary" style="width: 100%;" data-t="ess_cta">INICIAR PROTOCOLO</button>
+                        </form>
+                    </div>
+                </article>
+
+                <!-- Focused -->
+                <article class="card featured fade-in">
+                    <div class="badge">Most Active Mission</div>
+                    <div class="phase">Phase 02: Elite Ops</div>
+                    <h3 style="color: var(--primary);" data-t="foc_title">FOCUSED</h3>
+                    <div class="price">$500 <span data-t="foc_unit">MXN / Mes</span></div>
+                    <div class="price-meta">
+                        <span class="old-price">$700 MXN</span>
+                    </div>
+                    <ul class="features">
+                        <li>Todo en el Protocolo Essential</li>
+                        <li>Monitoreo Diario de Biométricos</li>
+                        <li>Análisis de Técnica Operativa</li>
+                        <li>Módulos Exclusivos (Hyrox/Abs)</li>
+                        <li>Sesión Táctica 1:1 Semanal</li>
+                        <li>Soporte Inmediato 24/7</li>
+                    </ul>
+                    <div class="paypal-placeholder">
+                        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+                            <input type="hidden" name="cmd" value="_s-xclick" />
+                            <input type="hidden" name="hosted_button_id" value="6QCRB4S7A2ZEJ" />
+                            <input type="hidden" name="currency_code" value="MXN" />
+                            <button type="submit" name="submit" class="btn-primary" style="width: 100%; background: var(--primary); color: var(--bg);" data-t="foc_cta">MAXIMIZAR RENDIMIENTO</button>
+                        </form>
+                    </div>
+                </article>
+            </div>
+
+            <div style="margin-top: 80px; text-align: center;" class="fade-in">
+                <p style="font-size: 10px; font-weight: 900; letter-spacing: 0.4em; opacity: 0.3; text-transform: uppercase;" data-t="footer_copy">A L P H A &nbsp; O P E R A T I O N A L &nbsp; S Y S T E M &nbsp; V 2 . 5</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Classes Section -->
+    <section id="classes" class="section-padding" style="background: rgba(0,0,0,0.3);">
+        <div class="container fade-in">
+            <div class="table-wrap">
+                <div class="table-header" data-t="prices_header">P R E C I O S</div>
+                
+                <h3 class="stencil" style="margin: 40px 0 20px; color: var(--primary);" data-t="prices_ind">POR CLASE (1-4 PERSONAS)</h3>
+                <div class="table-row">
+                    <div class="row-info"><div class="name" data-t="price_1">1 Clase</div></div>
+                    <div class="row-price"><div class="amt">$450</div></div>
+                </div>
+                <div class="table-row">
+                    <div class="row-info"><div class="name" data-t="price_2">2 Clases x Semana</div></div>
+                    <div class="row-price">
+                        <div class="amt">$600</div>
+                        <div class="sub">$300 x clase</div>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="row-info"><div class="name" data-t="price_12">12 Clases x Mes</div></div>
+                    <div class="row-price">
+                        <div class="amt">$2,500</div>
+                        <div class="sub">$210 x clase</div>
+                    </div>
+                </div>
+                <p style="font-size: 10px; opacity: 0.4; margin-top: 10px; letter-spacing: 0.2em; text-transform: uppercase;">* Pregunta por las promociones grupales</p>
+
+                <h3 class="stencil" style="margin: 60px 0 20px; color: var(--primary);" data-t="prices_grp">MENSUALIDAD (5 CLASES / SEM)</h3>
+                <div class="table-row">
+                    <div class="row-info"><div class="name" data-t="pkg_foc">Paquete "FOCUSED" (1 Persona)</div></div>
+                    <div class="row-price">
+                        <div class="amt">$3,500</div>
+                        <div class="sub">$175 x clase</div>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="row-info"><div class="name" data-t="pkg_partners">Paquete "PARTNERS" (2 Personas)</div></div>
+                    <div class="row-price">
+                        <div class="amt">$2,500 c/u</div>
+                        <div class="sub">$125 x clase</div>
+                    </div>
+                </div>
+                <div class="table-row">
+                    <div class="row-info"><div class="name" data-t="pkg_thirds">Paquete "THIRDS" (3 Personas)</div></div>
+                    <div class="row-price">
+                        <div class="amt">$2,200 c/u</div>
+                        <div class="sub">$110 x clase</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="section-padding" style="border-top: 1px solid rgba(118, 132, 85, 0.1); border-bottom: 1px solid rgba(118, 132, 85, 0.1); text-align: center; background: transparent;">
+        <div class="container" style="max-width: 800px;">
+            <div class="fade-in" style="margin-bottom: 50px;">
+                <div style="position: relative; min-height: 400px; max-width: 900px; margin: 0 auto; overflow: hidden; border-radius: 2px; border: 1px solid rgba(118, 132, 85, 0.1); box-shadow: 0 20px 40px rgba(0,0,0,0.5); background: rgba(0,0,0,0.2);">
+                    <img 
+                        src="https://thefocusplan.com/IMAGENES/FOTO%20FOCUS%202.png" 
+                        alt="Determinación Focus Box" 
+                        style="width: 100%; height: auto; display: block; filter: none;"
+                    >
+                </div>
+            </div>
+            
+            <div class="fade-in" style="margin-top: 40px;">
+                <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 30px;">
+                    <span style="color: var(--primary);">✦</span>
+                    <span style="color: var(--primary);">✦</span>
+                    <span style="color: var(--primary);">✦</span>
+                    <span style="color: var(--primary);">✦</span>
+                    <span style="color: var(--primary);">✦</span>
+                </div>
+                <blockquote class="stencil" style="font-size: clamp(1.5rem, 4vw, 2.5rem); line-height: 1.2; color: var(--smoke); margin-bottom: 20px;">
+                    "La diferencia entre lo imposible y lo posible reside en la determinación de una persona."
+                </blockquote>
+                <div style="font-size: 10px; font-weight: 900; letter-spacing: 0.5em; color: var(--primary); text-transform: uppercase;">FOCUS BOX COMMUNITY</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-logo">
+                    <h2 class="stencil">FOCUS BOX <span style="color: var(--primary);">FITNESS</span></h2>
+                    <p style="font-size: 12px; opacity: 0.5;">TACTICAL TRAINING SYSTEMS</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">IG</a>
+                        <a href="#" class="social-link">FB</a>
+                        <a href="#" class="social-link">WA</a>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <p style="font-weight: 700;">CONTACTO ELECTRÓNICO</p>
+                    <p style="opacity: 0.6; font-size: 0.9rem;">misiones@focusbox.fit</p>
+                    <p style="opacity: 0.6; font-size: 0.9rem; margin-top: 10px;">CDMX, MÉXICO</p>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2026 FOCUS BOX & FITNESS - YOU ALWAYS STAY FOCUSED
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

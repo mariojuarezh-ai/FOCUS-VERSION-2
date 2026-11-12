@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+@theme {
+  --color-olive: #768455;
+  --color-tactical-black: #0B0B0B;
+  --color-smoke: #F2F2F2;
+  --font-stencil: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+@layer base {
+  :root {
+    --olive: #768455;
+    --black: #0B0B0B;
+    --smoke: #F2F2F2;
+    --glass: rgba(118, 132, 85, 0.15);
+  }
+
+  body {
+    background-color: var(--black);
+    color: var(--smoke);
+    font-family: 'Montserrat', sans-serif;
+  }
+}
+
+@layer components {
+  .stencil {
+    font-family: var(--font-stencil);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 0.9;
+  }
+
+  .glass-card {
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(242, 242, 242, 0.15);
+    border-radius: 4px;
+  }
+
+  .btn-tactical {
+    background-color: var(--olive);
+    color: var(--black);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 2px;
+    box-shadow: 0 0 15px rgba(118, 132, 85, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .btn-tactical:hover {
+    box-shadow: 0 0 25px rgba(118, 132, 85, 0.6);
+    transform: translateY(-1px);
+  }
+
+  .topo-bg-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    background-image: radial-gradient(circle at 2px 2px, var(--smoke) 1px, transparent 0);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+}
