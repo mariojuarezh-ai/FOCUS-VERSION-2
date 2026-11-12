@@ -464,7 +464,7 @@ const getViewFromUrl = (): ViewType => {
   if (['focus-for-her', 'focusforher', 'her', 'feel-like-yourself', 'feel-like-yourself-again'].includes(target)) {
     return 'focus-for-her';
   }
-  if (['programas', 'planes', 'planes-online', 'online', 'rutina-gratis', 'rutinagratis', 'promocion', 'promo'].includes(target)) {
+  if (['programas', 'focus-for-him', 'focusforhim', 'him', 'planes', 'planes-online', 'online', 'rutina-gratis', 'rutinagratis', 'promocion', 'promo'].includes(target)) {
     return 'programas';
   }
   if (['clases', 'presencial', 'clases-presenciales', 'guadalajara', 'zapopan'].includes(target)) {
@@ -482,8 +482,6 @@ const getViewFromUrl = (): ViewType => {
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewType>(() => getViewFromUrl());
   const [language, setLanguage] = useState<Language>('es');
-  const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMusicOpen, setIsMusicOpen] = useState(false);
   const [showMusicFab, setShowMusicFab] = useState(true);
   const [spotifyUser, setSpotifyUser] = useState<any>(null);
@@ -493,8 +491,6 @@ export default function App() {
   const [selectedProgram, setSelectedProgram] = useState<ProgramType>(null);
   const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
   const [pdfDownloadSuccess, setPdfDownloadSuccess] = useState(false);
-
-  const desktopMenuRef = useRef<HTMLDivElement>(null);
 
   const handleDownloadRoutine = () => {
     setIsDownloadingPdf(true);
@@ -510,28 +506,11 @@ export default function App() {
   };
 
   const scrollToFocusForHer = () => {
-    const el = document.getElementById('testimonios');
+    const el = document.getElementById('seccion-focus-for-her') || document.getElementById('testimonios');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (desktopMenuRef.current && !desktopMenuRef.current.contains(event.target as Node)) {
-        setIsDesktopMenuOpen(false);
-      }
-    };
-
-    if (isDesktopMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isDesktopMenuOpen]);
 
   useEffect(() => {
     // Listen for Spotify Auth success message
@@ -642,12 +621,10 @@ export default function App() {
 
   const navigateTo = (view: ViewType) => {
     setCurrentView(view);
-    setIsMenuOpen(false);
-    setIsDesktopMenuOpen(false);
 
     const hashMapping: Record<string, string> = {
       home: '',
-      programas: 'planes-online',
+      programas: 'focus-for-him',
       clases: 'clases-presenciales',
       hyrox: 'hyrox',
       stenfit: 'stenfit',
@@ -673,229 +650,178 @@ export default function App() {
       <div className="fixed inset-0 bg-[#0B0B0B] z-[-2]" />
       <div className="topo-bg-pattern opacity-10" />
       
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-[#0B0B0B]/90 backdrop-blur-md border-b border-olive/20 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <button 
-            onClick={() => navigateTo('home')}
-            className="flex items-center gap-3 hover:opacity-80 transition-opacity z-50"
-          >
-             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-olive flex items-center justify-center overflow-hidden">
-                <Logo className="scale-[0.25] md:scale-[0.3]" />
-             </div>
-             <span className="font-stencil text-xl md:text-2xl tracking-tighter">FOCUS</span>
-          </button>
-          
-          <div className="hidden md:flex items-center gap-6">
-            
-            {/* Dynamic Menu Dropdown */}
-            <div 
-              ref={desktopMenuRef}
-              className="relative group"
-              onMouseEnter={() => setIsDesktopMenuOpen(true)}
-              onMouseLeave={() => setIsDesktopMenuOpen(false)}
-            >
+      {/* Navigation - Top Bar (Clean, Black bg, 'Verdecito' options divided by subtle green line) */}
+      <nav className="fixed top-0 w-full z-50 bg-[#0B0B0B] backdrop-blur-md border-b border-[#768455]/30">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6">
+          {/* Desktop / Tablet Bar */}
+          <div className="hidden md:flex items-center justify-between h-16 w-full relative">
+            {/* Left: FOCUS Logo & Stenfit */}
+            <div className="flex items-center gap-4 shrink-0">
               <button 
-                className={`flex items-center gap-2 hover:text-olive transition-colors font-black tracking-widest uppercase text-[15px] py-2 ${isDesktopMenuOpen ? 'text-olive' : ''}`}
+                onClick={() => {
+                  if (currentView !== 'home') navigateTo('home');
+                  else window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="flex items-center gap-2.5 hover:opacity-80 transition-opacity cursor-pointer"
               >
-                <Menu size={18} />
-                <span>{language === 'es' ? 'MENÚ' : 'MENU'}</span>
-              </button>
-              
-              {/* Dropdown Content */}
-              <div 
-                className={`absolute top-full left-0 pt-4 transition-all duration-300 w-56 ${isDesktopMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
-              >
-                <div className="bg-[#0B0B0B]/95 backdrop-blur-xl border border-olive/20 rounded-sm p-5 flex flex-col gap-6 shadow-2xl relative overflow-hidden">
-                  {/* Tactical decorative elements */}
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-olive/10 blur-xl rounded-full" />
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-olive/20" />
-                  
-                  <button 
-                    onClick={() => navigateTo('home')} 
-                    className={`text-left text-sm font-black tracking-widest uppercase hover:text-olive transition-colors flex items-center justify-between group/item ${currentView === 'home' ? 'text-olive' : 'text-smoke/80'}`}
-                  >
-                    <span>{t.nav.home}</span>
-                    <ChevronRight size={14} className={`opacity-0 -translate-x-2 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0 ${currentView === 'home' ? 'opacity-100 translate-x-0' : ''}`} />
-                  </button>
-                  <button 
-                    onClick={() => navigateTo('focus-for-her')} 
-                    className={`text-left text-sm font-black tracking-widest uppercase hover:text-olive transition-colors flex items-center justify-between group/item ${currentView === 'focus-for-her' ? 'text-olive' : 'text-smoke/80'}`}
-                  >
-                    <span className="flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-olive" />
-                      <span>FOCUS FOR HER</span>
-                    </span>
-                    <ChevronRight size={14} className={`opacity-0 -translate-x-2 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0 ${currentView === 'focus-for-her' ? 'opacity-100 translate-x-0' : ''}`} />
-                  </button>
-                  <button 
-                    onClick={() => navigateTo('programas')} 
-                    className={`text-left text-sm font-black tracking-widest uppercase hover:text-olive transition-colors flex items-center justify-between group/item ${currentView === 'programas' ? 'text-olive' : 'text-smoke/80'}`}
-                  >
-                    <span>{t.nav.programs}</span>
-                    <ChevronRight size={14} className={`opacity-0 -translate-x-2 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0 ${currentView === 'programas' ? 'opacity-100 translate-x-0' : ''}`} />
-                  </button>
-                  <button 
-                    onClick={() => navigateTo('clases')} 
-                    className={`text-left text-sm font-black tracking-widest uppercase hover:text-olive transition-colors flex items-center justify-between group/item ${currentView === 'clases' ? 'text-olive' : 'text-smoke/80'}`}
-                  >
-                    <span>{t.nav.presencial}</span>
-                    <ChevronRight size={14} className={`opacity-0 -translate-x-2 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0 ${currentView === 'clases' ? 'opacity-100 translate-x-0' : ''}`} />
-                  </button>
-                  <button 
-                    onClick={() => navigateTo('hyrox')} 
-                    className={`text-left text-sm font-black tracking-widest uppercase hover:text-olive transition-colors flex items-center justify-between group/item ${currentView === 'hyrox' ? 'text-olive' : 'text-smoke/80'}`}
-                  >
-                    <span>{t.nav.hyrox}</span>
-                    <ChevronRight size={14} className={`opacity-0 -translate-x-2 transition-all group-hover/item:opacity-100 group-hover/item:translate-x-0 ${currentView === 'hyrox' ? 'opacity-100 translate-x-0' : ''}`} />
-                  </button>
+                <div className="w-8 h-8 rounded-full border border-olive flex items-center justify-center overflow-hidden">
+                  <Logo className="scale-[0.25]" />
                 </div>
-              </div>
+                <span className="font-stencil text-xl tracking-tighter text-white">FOCUS</span>
+              </button>
+
+              <div className="h-4 w-px bg-[#768455]/30" />
+
+              <button 
+                onClick={() => navigateTo('stenfit')}
+                className={`hover:opacity-100 transition-opacity flex items-center cursor-pointer ${currentView === 'stenfit' ? 'opacity-100' : 'opacity-80'}`}
+                title="Stenfit App"
+              >
+                <img src="https://thefocusplan.com/IMAGENES/STENFIT.png" alt="Stenfit" className="h-4" />
+              </button>
             </div>
 
-            <div className="h-4 w-px bg-olive/20 mx-2" />
-
-            <button 
-              onClick={() => navigateTo('stenfit')} 
-              className={`hover:text-olive transition-colors flex items-center justify-center ${currentView === 'stenfit' ? 'text-olive' : ''}`}
-            >
-              <img src="https://thefocusplan.com/IMAGENES/STENFIT.png" alt="Stenfit" className={`h-4 lg:h-5 transition-opacity ${currentView === 'stenfit' ? 'opacity-100' : 'opacity-70 hover:opacity-100'}`} />
-            </button>
-            
-            <div className="h-4 w-px bg-olive/20 mx-2" />
-            
-            <button 
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 hover:text-olive transition-colors group font-black tracking-widest text-[15px] uppercase"
-            >
-              <Globe size={14} className="group-hover:rotate-12 transition-transform" />
-              {language === 'es' ? 'EN' : 'ES'}
-            </button>
-          </div>
-
-            <div className="flex items-center gap-4">
-            <button 
-              onClick={() => {
-                setIsMusicOpen(true);
-                setShowMusicFab(true);
-              }}
-              className="hidden sm:flex items-center justify-center transition-transform hover:scale-105"
-            >
-              <img 
-                src="https://thefocusplan.com/IMAGENES/BOTON%20SPOTIFY.png"
-                alt="COMMS / Spotify"
-                className="h-16 object-contain"
-                referrerPolicy="no-referrer"
-              />
-            </button>
-            <button 
-              className="hidden sm:block btn-tactical px-6 py-2 text-[15px] font-black tracking-widest uppercase"
-              onClick={() => window.open('https://api.whatsapp.com/send?phone=523318042910', '_blank')}
-            >
-              {t.nav.contact}
-            </button>
-            
-            {/* Mobile Menu Toggle */}
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden z-50 p-2 text-olive hover:bg-olive/10 transition-colors"
-            >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Navigation Overlay */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            key="mobile-menu-overlay"
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-0 bg-[#0B0B0B] z-[100] flex flex-col items-center justify-start px-6 overflow-y-auto"
-          >
-            <div className="flex justify-between items-center py-4 w-full md:hidden">
-              <div className="flex items-center gap-3">
-                 <div className="w-8 h-8 rounded-full border-2 border-olive flex items-center justify-center overflow-hidden">
-                    <Logo className="scale-[0.25]" />
-                 </div>
-                 <span className="font-stencil text-xl tracking-tighter text-olive">FOCUS</span>
-              </div>
-              <button 
-                onClick={() => setIsMenuOpen(false)}
-                className="p-2 text-olive hover:bg-olive/10 transition-colors"
-                aria-label="Close menu"
+            {/* Exact Center: Focus for her & Focus for him */}
+            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-6 lg:gap-8 pointer-events-auto">
+              <button
+                onClick={() => navigateTo('focus-for-her')}
+                className={`text-xs lg:text-sm font-bold tracking-wide transition-colors cursor-pointer ${
+                  currentView === 'focus-for-her' ? 'text-white' : 'text-[#768455] hover:text-white'
+                }`}
               >
-                <X size={24} />
+                Focus for her
+              </button>
+
+              <div className="h-3.5 w-px bg-[#768455]/40" />
+
+              <button
+                onClick={() => navigateTo('programas')}
+                className={`text-xs lg:text-sm font-bold tracking-wide transition-colors cursor-pointer ${
+                  currentView === 'programas' ? 'text-white' : 'text-[#768455] hover:text-white'
+                }`}
+              >
+                Focus for him
               </button>
             </div>
-            
-            <div className="flex flex-col items-center space-y-2 sm:space-y-4 w-full max-w-sm z-10 relative mt-0 sm:mt-4">
-              <button 
-                onClick={() => navigateTo('home')} 
-                className={`py-2 sm:py-3 stencil text-lg sm:text-xl md:text-2xl hover:text-olive transition-colors w-full text-center ${currentView === 'home' ? 'text-olive' : 'text-smoke'}`}
+
+            {/* Right: Focus for Hyrox right before ES, Spotify, Contact WhatsApp */}
+            <div className="flex items-center gap-3 lg:gap-4 shrink-0 ml-auto">
+              <button
+                onClick={() => navigateTo('hyrox')}
+                className={`text-xs lg:text-sm font-bold tracking-wide transition-colors cursor-pointer ${
+                  currentView === 'hyrox' ? 'text-white' : 'text-[#768455] hover:text-white'
+                }`}
               >
-                {t.nav.home}
+                Focus for Hyrox
               </button>
-              <button 
-                onClick={() => navigateTo('focus-for-her')} 
-                className={`py-2 sm:py-3 stencil text-lg sm:text-xl md:text-2xl hover:text-olive transition-colors w-full text-center flex items-center justify-center gap-2 ${currentView === 'focus-for-her' ? 'text-olive' : 'text-smoke'}`}
-              >
-                <span className="w-2 h-2 rounded-full bg-olive" />
-                <span>FOCUS FOR HER</span>
-              </button>
-              <button 
-                onClick={() => navigateTo('programas')} 
-                className={`py-2 sm:py-3 stencil text-lg sm:text-xl md:text-2xl hover:text-olive transition-colors w-full text-center ${currentView === 'programas' ? 'text-olive' : 'text-smoke'}`}
-              >
-                {t.nav.programs}
-              </button>
-              <button 
-                onClick={() => navigateTo('clases')} 
-                className={`py-2 sm:py-3 stencil text-lg sm:text-xl md:text-2xl hover:text-olive transition-colors w-full text-center ${currentView === 'clases' ? 'text-olive' : 'text-smoke'}`}
-              >
-                {t.nav.presencial}
-              </button>
-              <button 
-                onClick={() => navigateTo('hyrox')} 
-                className={`py-2 sm:py-3 stencil text-lg sm:text-xl md:text-2xl hover:text-olive transition-colors w-full text-center ${currentView === 'hyrox' ? 'text-olive' : 'text-smoke'}`}
-              >
-                {t.nav.hyrox}
-              </button>
-              <button 
-                onClick={() => navigateTo('stenfit')} 
-                className={`py-2 sm:py-3 stencil text-lg sm:text-xl md:text-2xl hover:text-olive transition-colors w-full flex justify-center ${currentView === 'stenfit' ? 'text-olive' : 'text-smoke'}`}
-              >
-                <img src="https://thefocusplan.com/IMAGENES/STENFIT.png" alt="Stenfit" className={`h-5 sm:h-6 md:h-8 transition-opacity ${currentView === 'stenfit' ? 'opacity-100' : 'opacity-70 hover:opacity-100'}`} />
-              </button>
-              
-              <div className="w-10 h-px bg-olive/30 my-2 sm:my-3" />
-              
+
+              {/* Subtle divider line right before ES */}
+              <div className="h-3.5 w-px bg-[#768455]/40" />
+
               <button 
                 onClick={toggleLanguage}
-                className="py-2 sm:py-3 flex items-center justify-center gap-2 stencil text-xs sm:text-sm text-olive hover:text-accent transition-colors w-full"
+                className="text-smoke/70 hover:text-olive transition-colors font-mono text-xs uppercase cursor-pointer"
               >
-                <Globe size={16} />
-                {language === 'es' ? 'SWITCH TO ENGLISH' : 'CAMBIAR A ESPAÑOL'}
+                {language === 'es' ? 'EN' : 'ES'}
               </button>
 
               <button 
-                className="btn-tactical w-full py-3 sm:py-4 stencil text-base sm:text-lg tracking-[0.2em] mt-2"
+                onClick={() => {
+                  setIsMusicOpen(true);
+                  setShowMusicFab(true);
+                }}
+                className="hover:scale-105 transition-transform cursor-pointer"
+                title="Focus Spotify Playlist"
+              >
+                <img src="https://thefocusplan.com/IMAGENES/BOTON%20SPOTIFY.png" alt="Spotify" className="h-9 object-contain" referrerPolicy="no-referrer" />
+              </button>
+
+              <button 
+                className="btn-tactical px-4 py-1.5 text-xs font-black tracking-widest uppercase cursor-pointer shadow-md"
                 onClick={() => window.open('https://api.whatsapp.com/send?phone=523318042910', '_blank')}
               >
                 {t.nav.contact}
               </button>
             </div>
+          </div>
 
-            {/* Decorative elements for mobile menu */}
-            <div className="absolute top-1/4 -left-12 w-64 h-64 bg-olive/5 rounded-full blur-[80px] pointer-events-none" />
-            <div className="absolute bottom-1/4 -right-12 w-64 h-64 bg-olive/5 rounded-full blur-[80px] pointer-events-none" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {/* Mobile Top Bar (Exact Match to client's drawing image_b44b4b45.png & audios) */}
+          <div className="md:hidden flex flex-col">
+            {/* Row 1: Logo Focus, Stenfit, and WhatsApp contact */}
+            <div className="flex items-center justify-between py-2 border-b border-[#768455]/20">
+              <div className="flex items-center gap-2.5">
+                <button 
+                  onClick={() => {
+                    if (currentView !== 'home') navigateTo('home');
+                    else window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="flex items-center gap-2 cursor-pointer"
+                >
+                  <div className="w-6 h-6 rounded-full border border-olive flex items-center justify-center overflow-hidden">
+                    <Logo className="scale-[0.2]" />
+                  </div>
+                  <span className="font-stencil text-base tracking-tighter text-white">FOCUS</span>
+                </button>
+
+                <div className="h-3 w-px bg-[#768455]/30" />
+
+                <button 
+                  onClick={() => navigateTo('stenfit')}
+                  className={`cursor-pointer ${currentView === 'stenfit' ? 'opacity-100 ring-1 ring-[#768455] rounded px-1' : 'opacity-80'}`}
+                  title="Stenfit App"
+                >
+                  <img src="https://thefocusplan.com/IMAGENES/STENFIT.png" alt="Stenfit" className="h-3.5" />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button 
+                  onClick={toggleLanguage}
+                  className="text-smoke/70 text-[10px] font-mono uppercase px-1.5 py-0.5 border border-[#768455]/30 rounded"
+                >
+                  {language === 'es' ? 'EN' : 'ES'}
+                </button>
+                <button 
+                  className="text-[10px] font-black tracking-widest uppercase text-black bg-olive px-2.5 py-1 rounded-sm cursor-pointer shadow"
+                  onClick={() => window.open('https://api.whatsapp.com/send?phone=523318042910', '_blank')}
+                >
+                  Contacto
+                </button>
+              </div>
+            </div>
+
+            {/* Row 2: The 3 green buttons divided by a subtle green line */}
+            <div className="grid grid-cols-3 divide-x divide-[#768455]/30 bg-[#0B0B0B] py-2 text-center border-t border-[#768455]/20">
+              <button
+                onClick={() => navigateTo('focus-for-her')}
+                className={`text-[11px] font-bold transition-all cursor-pointer px-1 py-1 truncate ${
+                  currentView === 'focus-for-her' ? 'text-white' : 'text-[#768455] active:text-white'
+                }`}
+              >
+                Focus for her
+              </button>
+
+              <button
+                onClick={() => navigateTo('programas')}
+                className={`text-[11px] font-bold transition-all cursor-pointer px-1 py-1 truncate ${
+                  currentView === 'programas' ? 'text-white' : 'text-[#768455] active:text-white'
+                }`}
+              >
+                Focus for him
+              </button>
+
+              <button
+                onClick={() => navigateTo('hyrox')}
+                className={`text-[11px] font-bold transition-all cursor-pointer px-1 py-1 truncate ${
+                  currentView === 'hyrox' ? 'text-white' : 'text-[#768455] active:text-white'
+                }`}
+              >
+                Focus for Hyrox
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
 
         {/* Tactical Spotify Player */}
         <div className={`fixed bottom-6 right-6 z-[60] flex flex-col items-end transition-all duration-500 pointer-events-none ${showMusicFab ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
@@ -966,7 +892,7 @@ export default function App() {
         </div>
       {/* End Spotify Player */}
 
-      <main className="pt-20">
+      <main className="pt-24 md:pt-20">
         {currentView === 'home' && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -986,38 +912,6 @@ export default function App() {
                 <source src="https://thefocusplan.com/VIDEOS/VIDEO%20FONDO%20FOCUS-2.mp4" type="video/mp4" />
               </video>
               <div className="absolute inset-0 bg-[#0B0B0B]/40 pointer-events-none" />
-            </div>
-
-            {/* ============================================================== */}
-            {/* 🔘 3 BOTONES ARRIBA (Idénticos a la referencia solicitada)      */}
-            {/* [ Focus for her ] [ Focus for him ] [ Focus for hyrox ]        */}
-            {/* ============================================================== */}
-            <div className="relative z-[40] w-full max-w-4xl mx-auto px-4 pt-4 md:pt-6 mb-8">
-              <div className="flex flex-wrap sm:flex-nowrap items-center justify-center gap-3 sm:gap-4">
-                {/* Botón: Focus for her */}
-                <button
-                  onClick={() => navigateTo('focus-for-her')}
-                  className="bg-white hover:bg-slate-100 text-black font-semibold text-sm sm:text-base px-6 py-2.5 sm:px-7 sm:py-3 rounded-full shadow-lg transition-all active:scale-95 whitespace-nowrap cursor-pointer text-center"
-                >
-                  Focus for her
-                </button>
-
-                {/* Botón: Focus for him */}
-                <button
-                  onClick={() => setSelectedProgram('him')}
-                  className="bg-white hover:bg-slate-100 text-black font-semibold text-sm sm:text-base px-6 py-2.5 sm:px-7 sm:py-3 rounded-full shadow-lg transition-all active:scale-95 whitespace-nowrap cursor-pointer text-center"
-                >
-                  Focus for him
-                </button>
-
-                {/* Botón: Focus for hyrox */}
-                <button
-                  onClick={() => navigateTo('hyrox')}
-                  className="bg-white hover:bg-slate-100 text-black font-semibold text-sm sm:text-base px-6 py-2.5 sm:px-7 sm:py-3 rounded-full shadow-lg transition-all active:scale-95 whitespace-nowrap cursor-pointer text-center"
-                >
-                  Focus for hyrox
-                </button>
-              </div>
             </div>
 
             {/* ============================================================== */}
@@ -1166,10 +1060,7 @@ export default function App() {
                   </p>
                 </div>
 
-                {/* Dejar los botones pero que digan:
-                    1- FOCUS FOR HER
-                    2- FOCUS FOR HIM
-                    3- FOCUS FOR HYROX */}
+                {/* Botones de navegación directa a cada sección */}
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center max-w-3xl mx-auto">
                   <button 
                     onClick={() => navigateTo('focus-for-her')}
@@ -1179,7 +1070,7 @@ export default function App() {
                   </button>
 
                   <button 
-                    onClick={() => setSelectedProgram('him')}
+                    onClick={() => navigateTo('programas')}
                     className="bg-white hover:bg-slate-100 text-black font-bold text-sm sm:text-base px-8 py-3.5 rounded-full shadow-lg active:scale-95 transition-all w-full sm:w-auto text-center cursor-pointer"
                   >
                     Focus for him
@@ -1330,9 +1221,10 @@ export default function App() {
 
               <div className="text-center mb-14 max-w-2xl mx-auto">
                 <div className="inline-block px-4 py-1 border border-olive/30 text-olive text-[10px] font-black tracking-[0.5em] uppercase mb-6 rounded-full">
-                  Elite Systems
+                  PROGRAMAS ONLINE // ELITE SYSTEMS
                 </div>
-                <h2 className="stencil text-3xl sm:text-4xl md:text-8xl mb-6">{t.programs.title} <span className="text-olive">{t.programs.title_accent}</span></h2>
+                <h2 className="stencil text-3xl sm:text-4xl md:text-8xl mb-4">FOCUS <span className="text-olive">FOR HIM</span></h2>
+                <div className="text-sm md:text-base font-bold text-smoke/90 tracking-widest uppercase mb-6">{t.programs.title} {t.programs.title_accent}</div>
                 <div className="w-16 md:w-24 h-1 bg-olive mx-auto mb-8" />
                 <p className="text-smoke/60 text-xs md:text-sm font-medium tracking-widest uppercase px-4">
                   {t.programs.subtitle}
